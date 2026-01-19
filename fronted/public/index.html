@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biznexa MVP - Plataforma para PMEs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #ff9e00;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --box-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            background-color: #f5f7fb;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header e Navegação */
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification-badge {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-badge span {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 25px 0;
+            box-shadow: var(--box-shadow);
+            height: 100%;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 25px;
+            text-decoration: none;
+            color: var(--dark);
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: var(--light-gray);
+            color: var(--primary);
+        }
+
+        .sidebar-menu a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Conteúdo da Página */
+        .page-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: var(--dark);
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        /* Cards */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--box-shadow-hover);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .card-change {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-change.positive {
+            color: #28a745;
+        }
+
+        .card-change.negative {
+            color: var(--danger);
+        }
+
+        /* Tabelas */
+        .table-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: var(--light-gray);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .badge-warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .badge-danger {
+            background-color: rgba(247, 37, 133, 0.2);
+            color: var(--danger);
+        }
+
+        /* Formulários */
+        .form-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* Páginas específicas */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 20px;
+        }
+
+        .stat-icon.sales {
+            background-color: rgba(67, 97, 238, 0.2);
+            color: var(--primary);
+        }
+
+        .stat-icon.orders {
+            background-color: rgba(114, 9, 183, 0.2);
+            color: var(--secondary);
+        }
+
+        .stat-icon.products {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+        }
+
+        .stat-icon.customers {
+            background-color: rgba(247, 37, 133, 0.2);
+            color: var(--danger);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Loja Online */
+        .store-preview {
+            border: 1px dashed #ced4da;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            background-color: white;
+        }
+
+        .store-preview img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .store-url {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Market Directory */
+        .business-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .business-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .business-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .business-name {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .business-category {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .business-highlight {
+            background-color: #ffd700;
+            color: #333;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+
+        .business-body {
+            padding: 20px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .sidebar {
+                display: none;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                height: calc(100vh - 80px);
+                z-index: 999;
+            }
+            
+            .sidebar.active {
+                display: block;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .business-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 14px;
+        }
+
+        /* Utilitários */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 15px;
+        }
+
+        .mt-4 {
+            margin-top: 20px;
+        }
+
+        .mt-5 {
+            margin-top: 30px;
+        }
+
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        .mb-4 {
+            margin-bottom: 20px;
+        }
+
+        .mb-5 {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Biznexa</span>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="#dashboard" class="active">Dashboard</a>
+                    <a href="#products">Produtos</a>
+                    <a href="#sales">Vendas</a>
+                    <a href="#online-store">Loja Online</a>
+                    <a href="#market">Diretório</a>
+                    <a href="#billing">Assinatura</a>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="notification-badge">
+                        <i class="fas fa-bell"></i>
+                        <span>3</span>
+                    </div>
+                    <div class="user-avatar">VU</div>
+                    <div class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#products"><i class="fas fa-box"></i> Produtos</a></li>
+                <li><a href="#inventory"><i class="fas fa-warehouse"></i> Estoque</a></li>
+                <li><a href="#sales"><i class="fas fa-shopping-cart"></i> Vendas (PDV)</a></li>
+                <li><a href="#reports"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li><a href="#online-store"><i class="fas fa-store"></i> Loja Online</a></li>
+                <li><a href="#market"><i class="fas fa-globe"></i> Diretório</a></li>
+                <li><a href="#highlights"><i class="fas fa-star"></i> Destaques</a></li>
+                <li><a href="#billing"><i class="fas fa-credit-card"></i> Assinatura</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> Configurações</a></li>
+            </ul>
+        </aside>
+
+        <!-- Conteúdo da Página -->
+        <main class="page-content">
+            <!-- Dashboard -->
+            <section id="dashboard" class="page-section active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-subtitle">Bem-vindo de volta, Victor! Aqui está o resumo do seu negócio.</p>
+                    </div>
+                    <div class="btn"><i class="fas fa-plus"></i> Nova Venda</div>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon sales">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-value">R$ 4.280</div>
+                        <div class="stat-label">Vendas Hoje</div>
+                        <div class="card-change positive"><i class="fas fa-arrow-up"></i> 12%</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Pedidos Online</div>
+                        <div class="card-change positive"><i class="fas fa-arrow-up"></i> 5%</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon products">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-value">124</div>
+                        <div class="stat-label">Produtos Ativos</div>
+                        <div class="card-change negative"><i class="fas fa-arrow-down"></i> 3%</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon customers">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-value">42</div>
+                        <div class="stat-label">Visitas Hoje</div>
+                        <div class="card-change positive"><i class="fas fa-arrow-up"></i> 8%</div>
+                    </div>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <h3 class="card-title"><i class="fas fa-fire"></i> Produtos Mais Vendidos</h3>
+                        <div class="card-value">5 produtos</div>
+                        <p>Camiseta básica lidera com 28 vendas esta semana</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Estoque Baixo</h3>
+                        <div class="card-value">3 produtos</div>
+                        <p>Jeans azul está com apenas 2 unidades</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title"><i class="fas fa-chart-line"></i> Visibilidade</h3>
+                        <div class="card-value">156 cliques</div>
+                        <p>+24% em relação à semana passada</p>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <h3 class="mb-4">Vendas Recentes</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Valor</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#00128</td>
+                                <td>Maria Silva</td>
+                                <td>R$ 189,90</td>
+                                <td>19/01/2026</td>
+                                <td><span class="badge badge-success">Concluída</span></td>
+                            </tr>
+                            <tr>
+                                <td>#00127</td>
+                                <td>João Santos</td>
+                                <td>R$ 89,50</td>
+                                <td>18/01/2026</td>
+                                <td><span class="badge badge-success">Concluída</span></td>
+                            </tr>
+                            <tr>
+                                <td>#00126</td>
+                                <td>Ana Oliveira</td>
+                                <td>R$ 245,00</td>
+                                <td>18/01/2026</td>
+                                <td><span class="badge badge-warning">Processando</span></td>
+                            </tr>
+                            <tr>
+                                <td>#00125</td>
+                                <td>Pedro Costa</td>
+                                <td>R$ 120,00</td>
+                                <td>17/01/2026</td>
+                                <td><span class="badge badge-success">Concluída</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Produtos (outras seções estão ocultas por padrão) -->
+            <section id="products" class="page-section" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title">Produtos</h1>
+                    <button class="btn" id="addProductBtn"><i class="fas fa-plus"></i> Adicionar Produto</button>
+                </div>
+                
+                <div class="table-container">
+                    <div class="page-header" style="padding: 0; margin: 0 0 20px 0;">
+                        <div>
+                            <h3>Todos os Produtos</h3>
+                            <p>Gerencie seu catálogo de produtos</p>
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Buscar produto..." style="width: 250px;">
+                        </div>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Categoria</th>
+                                <th>Preço</th>
+                                <th>Estoque</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 40px; height: 40px; background-color: #e9ecef; border-radius: 4px;"></div>
+                                        <div>
+                                            <div>Camiseta Básica</div>
+                                            <div style="font-size: 12px; color: var(--gray);">SKU: CM001</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Vestuário</td>
+                                <td>R$ 49,90</td>
+                                <td>42</td>
+                                <td><span class="badge badge-success">Ativo</span></td>
+                                <td>
+                                    <button class="btn-outline btn" style="padding: 5px 10px; font-size: 14px;">Editar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 40px; height: 40px; background-color: #e9ecef; border-radius: 4px;"></div>
+                                        <div>
+                                            <div>Calça Jeans Azul</div>
+                                            <div style="font-size: 12px; color: var(--gray);">SKU: CJ002</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Vestuário</td>
+                                <td>R$ 129,90</td>
+                                <td>2</td>
+                                <td><span class="badge badge-danger">Estoque Baixo</span></td>
+                                <td>
+                                    <button class="btn-outline btn" style="padding: 5px 10px; font-size: 14px;">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Loja Online -->
+            <section id="online-store" class="page-section" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title">Loja Online</h1>
+                    <button class="btn btn-success"><i class="fas fa-sync"></i> Atualizar Loja</button>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <h3 class="card-title"><i class="fas fa-store"></i> Visão Geral</h3>
+                        <p>Sua loja está <strong>ativa</strong> e visível para clientes.</p>
+                        <div class="store-url mt-4">
+                            <span>URL: </span>
+                            <strong>https://biznexa.com/loja/victor-moda</strong>
+                            <button class="btn-outline btn" style="padding: 5px 10px;"><i class="fas fa-copy"></i></button>
+                        </div>
+                        <div class="mt-4">
+                            <a href="#" class="btn"><i class="fas fa-external-link-alt"></i> Ver Loja</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title"><i class="fas fa-chart-bar"></i> Estatísticas</h3>
+                        <div class="card-value">156 visitas</div>
+                        <p>Últimos 7 dias</p>
+                        <div class="mt-4">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Pedidos via WhatsApp:</span>
+                                <strong>12</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Taxa de conversão:</span>
+                                <strong>7.7%</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="store-preview">
+                    <h3>Pré-visualização da Loja</h3>
+                    <p>Como os clientes veem sua loja online</p>
+                    <div style="width: 100%; height: 300px; background-color: #f8f9fa; border-radius: 8px; margin: 20px 0; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                        <div style="width: 100px; height: 100px; background-color: #e9ecef; border-radius: 8px; margin-bottom: 20px;"></div>
+                        <h3>Victor Moda</h3>
+                        <p>Roupas e acessórios modernos</p>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <div class="btn" style="padding: 8px 16px;">Ver Catálogo</div>
+                            <div class="btn btn-success" style="padding: 8px 16px;"><i class="fab fa-whatsapp"></i> Pedir via WhatsApp</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Diretório Market -->
+            <section id="market" class="page-section" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title">Biznexa Market</h1>
+                    <button class="btn"><i class="fas fa-search"></i> Explorar Negócios</button>
+                </div>
+                
+                <p class="mb-5">Encontre e conecte-se com outros negócios na plataforma Biznexa. Aumente sua visibilidade com os planos de destaque.</p>
+                
+                <div class="business-cards">
+                    <div class="business-card">
+                        <div class="business-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h3 class="business-name">Padaria do João <span class="business-highlight">Destaque</span></h3>
+                            </div>
+                            <p class="business-category">Alimentos & Bebidas</p>
+                        </div>
+                        <div class="business-body">
+                            <p>Pães frescos, bolos e salgados artesanais. Delivery disponível.</p>
+                            <div class="mt-4">
+                                <div style="display: flex; gap: 10px;">
+                                    <span class="badge">4.7 ★</span>
+                                    <span class="badge badge-success">Aberto agora</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button class="btn-outline btn" style="width: 100%;">Visitar Página</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="business-card">
+                        <div class="business-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h3 class="business-name">Tech Solutions</h3>
+                            </div>
+                            <p class="business-category">Tecnologia & Serviços</p>
+                        </div>
+                        <div class="business-body">
+                            <p>Consultoria em TI, desenvolvimento de software e suporte técnico.</p>
+                            <div class="mt-4">
+                                <div style="display: flex; gap: 10px;">
+                                    <span class="badge">4.9 ★</span>
+                                    <span class="badge badge-success">Verificado</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button class="btn-outline btn" style="width: 100%;">Visitar Página</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container mt-5">
+                    <h3 class="mb-4">Seu Negócio no Diretório</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <h4>Victor Moda</h4>
+                            <p>Categoria: Vestuário & Moda</p>
+                        </div>
+                        <div>
+                            <span class="badge badge-warning">Plano Starter</span>
+                        </div>
+                    </div>
+                    <p>Seu negócio aparece na posição <strong>#8</strong> na busca por "moda". Aumente sua visibilidade com um plano de destaque.</p>
+                    <div class="mt-4">
+                        <button class="btn"><i class="fas fa-star"></i> Melhorar Visibilidade</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Assinatura -->
+            <section id="billing" class="page-section" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title">Assinatura</h1>
+                    <button class="btn btn-success"><i class="fas fa-credit-card"></i> Gerenciar Pagamento</button>
+                </div>
+                
+                <div class="cards-container">
+                    <div class="card">
+                        <h3 class="card-title"><i class="fas fa-crown"></i> Seu Plano Atual</h3>
+                        <div class="card-value" style="color: var(--warning);">Pro</div>
+                        <p>Plano atualizado em 15/01/2026</p>
+                        <div class="mt-4">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Próxima cobrança:</span>
+                                <strong>15/02/2026</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Valor:</span>
+                                <strong>R$ 89,90/mês</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title"><i class="fas fa-chart-line"></i> Uso do Plano</h3>
+                        <p>Limites e utilização atual</p>
+                        <div class="mt-4">
+                            <div style="margin-bottom: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span>Usuários (2/3)</span>
+                                    <span>66%</span>
+                                </div>
+                                <div style="height: 8px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: 66%; height: 100%; background-color: var(--primary);"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span>Produtos (124/500)</span>
+                                    <span>25%</span>
+                                </div>
+                                <div style="height: 8px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
+                                    <div style="width: 25%; height: 100%; background-color: var(--success);"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <h3 class="mb-4">Planos Disponíveis</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                        <div class="card text-center">
+                            <h3 class="card-title">Starter</h3>
+                            <div class="card-value">R$ 29,90<span style="font-size: 16px; color: var(--gray);">/mês</span></div>
+                            <div class="mt-4">
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> 1 usuário</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Até 100 produtos</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Página básica</p>
+                                <p><i class="fas fa-times" style="color: var(--danger);"></i> Loja online</p>
+                                <p><i class="fas fa-times" style="color: var(--danger);"></i> Destaque no diretório</p>
+                            </div>
+                            <button class="btn-outline btn mt-4" style="width: 100%;">Selecionar</button>
+                        </div>
+                        
+                        <div class="card text-center" style="border: 2px solid var(--primary);">
+                            <h3 class="card-title">Pro</h3>
+                            <div class="card-value">R$ 89,90<span style="font-size: 16px; color: var(--gray);">/mês</span></div>
+                            <div class="mt-4">
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Até 3 usuários</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Até 500 produtos</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Loja online completa</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Destaque básico</p>
+                                <p><i class="fas fa-times" style="color: var(--danger);"></i> Anúncios pagos</p>
+                            </div>
+                            <button class="btn mt-4" style="width: 100%;">Plano Atual</button>
+                        </div>
+                        
+                        <div class="card text-center">
+                            <h3 class="card-title">Business</h3>
+                            <div class="card-value">R$ 199,90<span style="font-size: 16px; color: var(--gray);">/mês</span></div>
+                            <div class="mt-4">
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Usuários ilimitados</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Produtos ilimitados</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Loja online premium</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Destaque garantido</p>
+                                <p><i class="fas fa-check" style="color: #28a745;"></i> Anúncios pagos</p>
+                            </div>
+                            <button class="btn-outline btn mt-4" style="width: 100%;">Upgrade</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Adicionar Produto -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Adicionar Novo Produto</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="productForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Nome do Produto</label>
+                        <input type="text" class="form-control" placeholder="Ex: Camiseta Básica" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">SKU</label>
+                        <input type="text" class="form-control" placeholder="Ex: CM001">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Preço (R$)</label>
+                        <input type="number" class="form-control" step="0.01" placeholder="49.90" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoria</label>
+                        <select class="form-control" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="clothing">Vestuário</option>
+                            <option value="electronics">Eletrônicos</option>
+                            <option value="food">Alimentos</option>
+                            <option value="services">Serviços</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Quantidade em Estoque</label>
+                    <input type="number" class="form-control" placeholder="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Descrição</label>
+                    <textarea class="form-control" rows="3" placeholder="Descreva o produto..."></textarea>
+                </div>
+                
+                <div class="form-group" style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button type="submit" class="btn" style="flex: 1;">Salvar Produto</button>
+                    <button type="button" class="btn-outline btn" id="cancelModal" style="flex: 1;">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Biznexa</h4>
+                    <p>Plataforma digital multi-tenant para pequenas e médias empresas. Gestão completa do seu negócio em um só lugar.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#products">Produtos</a></li>
+                        <li><a href="#online-store">Loja Online</a></li>
+                        <li><a href="#market">Diretório</a></li>
+                        <li><a href="#billing">Assinatura</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> suporte@biznexa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 99999-9999</li>
+                        <li><i class="fas fa-map-marker-alt"></i> São Paulo, SP</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 Biznexa MVP. Todos os direitos reservados. Versão 1.0</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navegação entre páginas
+        document.querySelectorAll('.nav-links a, .sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Atualizar navegação ativa
+                document.querySelectorAll('.nav-links a, .sidebar-menu a').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Mostrar página correspondente
+                const targetId = this.getAttribute('href').substring(1);
+                document.querySelectorAll('.page-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                if (targetId) {
+                    document.getElementById(targetId).style.display = 'block';
+                    
+                    // Atualizar título da página se for o dashboard
+                    if (targetId === 'dashboard') {
+                        document.title = 'Dashboard - Biznexa';
+                    } else {
+                        const pageTitle = document.querySelector(`#${targetId} .page-title`);
+                        if (pageTitle) {
+                            document.title = `${pageTitle.textContent} - Biznexa`;
+                        }
+                    }
+                }
+                
+                // Fechar sidebar no mobile
+                if (window.innerWidth <= 992) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            });
+        });
+        
+        // Menu mobile
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+        
+        // Modal de adicionar produto
+        const addProductBtn = document.getElementById('addProductBtn');
+        const addProductModal = document.getElementById('addProductModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cancelModalBtn = document.getElementById('cancelModal');
+        
+        if (addProductBtn) {
+            addProductBtn.addEventListener('click', function() {
+                addProductModal.style.display = 'flex';
+            });
+        }
+        
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', function() {
+                addProductModal.style.display = 'none';
+            });
+        }
+        
+        if (cancelModalBtn) {
+            cancelModalBtn.addEventListener('click', function() {
+                addProductModal.style.display = 'none';
+            });
+        }
+        
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', function(e) {
+            if (e.target === addProductModal) {
+                addProductModal.style.display = 'none';
+            }
+        });
+        
+        // Formulário de produto
+        const productForm = document.getElementById('productForm');
+        if (productForm) {
+            productForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Produto adicionado com sucesso!');
+                addProductModal.style.display = 'none';
+                productForm.reset();
+            });
+        }
+        
+        // Simulação de notificações
+        document.querySelector('.notification-badge').addEventListener('click', function() {
+            alert('Você tem 3 notificações:\n1. Novo pedido recebido\n2. Estoque baixo: Calça Jeans Azul\n3. Seu plano será renovado em 15 dias');
+        });
+        
+        // Botão de cópia de URL da loja
+        document.querySelectorAll('.fa-copy').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const url = 'https://biznexa.com/loja/victor-moda';
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('URL copiada para a área de transferência!');
+                });
+            });
+        });
+        
+        // Inicialização da página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se há um hash na URL para carregar a página correta
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const targetLink = document.querySelector(`.nav-links a[href="#${hash}"], .sidebar-menu a[href="#${hash}"]`);
+                if (targetLink) {
+                    targetLink.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
