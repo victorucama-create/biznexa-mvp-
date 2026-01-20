@@ -1,10 +1,12 @@
+# Este arquivo é OPcional se configurar pelo painel do Render
 services:
   - type: web
     name: biznexa-backend
     env: php
-    region: ohio  # ou sao-paulo quando disponível
-    buildCommand: "./.render/build.sh"
-    startCommand: "php artisan serve --host=0.0.0.0 --port=${PORT}"
+    region: ohio
+    rootDirectory: backend
+    buildCommand: chmod +x ./.render/build.sh && ./.render/build.sh
+    startCommand: php artisan serve --host=0.0.0.0 --port=${PORT}
     healthCheckPath: /api/health
     envVars:
       - key: APP_ENV
@@ -13,36 +15,8 @@ services:
         value: false
       - key: LOG_CHANNEL
         value: stderr
-      - key: APP_URL
-        sync: false
-      - key: FRONTEND_URL
-        sync: false
-      - key: DB_CONNECTION
-        value: pgsql
-      - key: DB_HOST
-        sync: false
-      - key: DB_PORT
-        sync: false
-      - key: DB_DATABASE
-        sync: false
-      - key: DB_USERNAME
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: JWT_SECRET
-        generateValue: true
-      - key: APP_KEY
-        generateValue: true
     autoDeploy: true
     disk:
       name: storage
-      mountPath: /var/www/html/storage
+      mountPath: /opt/render/project/src/backend/storage
       sizeGB: 1
-
-databases:
-  - name: biznexa-db
-    databaseName: biznexa
-    user: biznexa_user
-    region: ohio
-    plan: free
-    ipAllowList: []
