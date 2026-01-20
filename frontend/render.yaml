@@ -2,23 +2,17 @@ services:
   - type: web
     name: biznexa-frontend
     env: static
+    rootDirectory: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
-        sync: false
-      - key: VITE_APP_NAME
-        value: Biznexa
-      - key: VITE_APP_VERSION
-        value: 1.0.0
+        value: https://biznexa-backend.onrender.com/api
     headers:
       - path: /*
         name: Cache-Control
         value: public, max-age=31536000, immutable
       - path: /index.html
-        name: Cache-Control
-        value: public, max-age=0, must-revalidate
-      - path: /service-worker.js
         name: Cache-Control
         value: public, max-age=0, must-revalidate
     routes:
