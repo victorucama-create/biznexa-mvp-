@@ -1,13 +1,16 @@
 services:
   - type: web
     name: biznexa-frontend
-    runtime: node
+    env: static
     buildCommand: npm install && npm run build
-    startCommand: npm run preview
+    staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
         sync: false
-    staticPublishPath: ./dist
+      - key: VITE_APP_NAME
+        value: Biznexa
+      - key: VITE_APP_VERSION
+        value: 1.0.0
     headers:
       - path: /*
         name: Cache-Control
