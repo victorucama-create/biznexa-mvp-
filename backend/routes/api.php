@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\StoreController;
 use App\Http\Controllers\Api\MarketController;
 use App\Http\Controllers\Api\BillingController;
 use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\Api\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,16 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
     Route::post('refresh', [AuthController::class, 'refresh']);
+    
+    // Public store routes
+    Route::get('public/store/{slug}', [StoreController::class, 'publicShow']);
+    Route::get('public/store/{slug}/products', [StoreController::class, 'publicProducts']);
+    Route::post('public/store/{slug}/order', [StoreController::class, 'placeOrder']);
+    
+    // Public market routes
+    Route::get('public/market', [MarketController::class, 'publicIndex']);
+    Route::get('public/market/search', [MarketController::class, 'publicSearch']);
+    Route::get('public/market/business/{id}', [MarketController::class, 'publicShow']);
 });
 
 Route::middleware(['auth:api', 'multi-tenant'])->group(function () {
@@ -85,13 +96,6 @@ Route::middleware(['auth:api', 'multi-tenant'])->group(function () {
         Route::post('publish', [StoreController::class, 'publish']);
     });
 
-    // Public Store (no auth required)
-    Route::group(['prefix' => 'public/store'], function () {
-        Route::get('{slug}', [StoreController::class, 'publicShow']);
-        Route::get('{slug}/products', [StoreController::class, 'publicProducts']);
-        Route::post('{slug}/order', [StoreController::class, 'placeOrder']);
-    });
-
     // Market Directory
     Route::group(['prefix' => 'market'], function () {
         Route::get('/', [MarketController::class, 'index']);
@@ -110,6 +114,7 @@ Route::middleware(['auth:api', 'multi-tenant'])->group(function () {
         Route::post('cancel', [BillingController::class, 'cancel']);
         Route::get('invoices', [BillingController::class, 'invoices']);
         Route::get('invoices/{id}', [BillingController::class, 'downloadInvoice']);
+        Route::post('webhook/{gateway}', [BillingController::class, 'webhook']);
     });
 
     // Settings
@@ -122,6 +127,8 @@ Route::middleware(['auth:api', 'multi-tenant'])->group(function () {
         Route::delete('users/{id}', [SettingsController::class, 'deleteUser']);
         Route::get('integrations', [SettingsController::class, 'integrations']);
         Route::put('integrations', [SettingsController::class, 'updateIntegrations']);
+        Route::get('notifications', [SettingsController::class, 'notifications']);
+        Route::put('notifications', [SettingsController::class, 'updateNotifications']);
     });
 
     // Reports
@@ -129,5 +136,13 @@ Route::middleware(['auth:api', 'multi-tenant'])->group(function () {
         Route::get('sales', [ReportController::class, 'salesReport']);
         Route::get('products', [ReportController::class, 'productsReport']);
         Route::get('financial', [ReportController::class, 'financialReport']);
+        Route::get('export/{type}', [ReportController::class, 'exportReport']);
     });
+});
+
+// Public API routes (no auth required)
+Route::group(['prefix' => 'public'], function () {
+    Route::get('market/featured', [MarketController::class, 'featuredBusinesses']);
+    Route::get('market/categories', [MarketController::class, 'categories']);
+    Route::get('store/{slug}/validate', [StoreController::class, 'validateSlug']);
 });
