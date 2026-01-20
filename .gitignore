@@ -1,0 +1,25 @@
+# backend/.gitignore (adicione)
+.env
+.DS_Store
+/node_modules
+/vendor
+/public/storage
+/storage/*.key
+*.env
+.env.*.local
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+laravel-*.log
+
+# frontend/.gitignore (adicione)
+.env
+.env.local
+.env.*.local
+node_modules/
+dist/
+dist-ssr/
+*.local
+.DS_Store
